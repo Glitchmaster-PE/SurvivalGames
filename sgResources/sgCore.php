@@ -4,7 +4,7 @@
 
 class sgCore{
 
- private $server
+ private $server;
  
 	function __construct(){
 	  $this->server = ServerAPI::request();
@@ -17,3 +17,6 @@ class sgCore{
 	function __destruct(){
 	
 	} 
+	
+} 
+?>
