@@ -6,11 +6,11 @@
  description=Gives a class when a command is done
  version=1.0
  author=Glitchmaster_PE
- class=Classes
+ class=KitPro
  apiversion=10
  */
 
-class Classes implements Plugin
+class KitPro implements Plugin
 {
     private $api;
     public function __construct(ServerAPI $api, $server = false)
@@ -99,86 +99,82 @@ class Classes implements Plugin
 
     public function commandHandler($cmd, $args, $issuer)
     {
-        $username = $issuer -> username;
-        if (in_array($username, $this -> player))
-        {
-            $output = "You already have a kit!";
-            return $output;
-        }
-        foreach ($this->kit as $kitName => $kit)
-        {
-            switch($cmd)
-            {
-                case "/class" :
-                    if (!$issuer instanceof Player)
-                    {
-                        $output = "Please run this command in-game!";
-                        return $output;
-                    }
-                    switch(strtolower($args[0]))
-                    {
-                        case strtolower($kitName) :
-                            if ($kit["Donator"] == true and !in_array($username, $this -> donators))
-                            {
-                                $output = "You are not a donator!";
-                            }
-                            else
-                            {
-                                $this -> giveKit($kit, $issuer);
-                                $output = "Your class has been given!";
-                                array_push($this -> player, $username);
-                            }
-                            return $output;
-                            break;
-                        default :
-                            $normalKits = 'Normal Classes: ';
-                            $donatorKits = 'Donator Classes: ';
-                            foreach ($this->kit as $name => $kit)
-                            {
-                                if ($kit['Donator'] == true)
-                                {
-                                    if ($donatorKits === 'Donator Classes: ')
-                                    {
-                                        $donatorKits .= $name;
-                                    }
-                                    else
-                                    {
-                                        $donatorKits .= ', ' . $name;
-                                    }
-                                }
-                                else
-                                {
-                                    if ($normalKits === 'Normal Classes: ')
-                                    {
-                                        $normalKits .= $name;
-                                    }
-                                    else
-                                    {
-                                        $normalKits .= ', ' . $name;
-                                    }
-                                }
-                            }
-                            if ($normalKits !== 'Normal Classes: ')
-                            {
-                                $issuer -> sendChat($normalKits);
-                            }
-                            if ($donatorKits !== 'Donator Classes: ')
-                            {
-                                $issuer -> sendChat($donatorKits);
-                            }
-                            break;
-                    }
-                    break;
+		switch($cmd)
+		{
+			case "/class" :
+				if (!$issuer instanceof Player)
+				{
+					$output = 'Please run this command in-game!';
+					break;
+				}
+				$username = $issuer -> username;
+				if (in_array($username, $this -> player))
+				{
+					$output = 'You already have a class!';
+					break;
+				}
+				if (isset($this -> kit[strtolower($args[0])]))
+				{
+					$kit = $this -> kit[strtolower($args[0])];
+					if ($kit["Donator"] == true and !in_array($username, $this -> donators))
+					{
+						$output = 'You are not a donator!';
+					}
+					else
+					{
+						$this -> giveKit($kit, $issuer);
+						$output = '[KitPro] Your kit has been given!';
+						array_push($this -> player, $username);
+					}
+				}
+				else
+				{
+					$normalKits = 'Normal Kits: ';
+					$donatorKits = 'Donator Kits: ';
+					foreach ($this->kit as $name => $kit)
+					{
+						if ($kit['Donator'] == true)
+						{
+							if ($donatorKits === 'Donator Kits: ')
+							{
+								$donatorKits .= $name;
+							}
+							else
+							{
+								$donatorKits .= ', ' . $name;
+							}
+						}
+						else
+						{
+							if ($normalKits === 'Normal Kits: ')
+							{
+								$normalKits .= $name;
+							}
+							else
+							{
+								$normalKits .= ', ' . $name;
+							}
+						}
+					}
+					if ($normalKits !== 'Normal Kits: ')
+					{
+						$issuer -> sendChat($normalKits);
+					}
+					if ($donatorKits !== 'Donator Kits: ')
+					{
+						$issuer -> sendChat($donatorKits);
+					}
+				}
+				break;
 
-                case "donator" :
-                    $targetUsername = $args[0];
-                    array_push($this -> donators, $targetUsername);
-                    $output = "$targetUsername added as a donator!";
-                    $this -> api -> plugin -> writeYAML($this -> path . "Donators.yml", $this -> donators);
-                    return $output;
-                    break;
-            }
-        }
+			case "donator" :
+				$targetUsername = $args[0];
+				array_push($this -> donators, $targetUsername);
+				$output = "[KitPro] $targetUsername added as a donator!";
+				$this -> api -> plugin -> writeYAML($this -> path . "Donators.yml", $this -> donators);
+				break;
+		}
+        return $output;
     }
 
     public function giveKit($kit, $player)
