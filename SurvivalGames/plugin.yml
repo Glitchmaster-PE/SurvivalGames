@@ -1,0 +1,4 @@
+name: SurvivalGames
+main: SuvivalGames
+version: "0.1"
+api: 1.12.0
