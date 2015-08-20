@@ -27,7 +27,7 @@ class SGKits extends PluginBase implements Listener {
 		else{
 			$this->kits = array(
 			"soldier" => array(
-                "Donator" => false,
+                "VIP" => false,
                 "Items" => array(
                     array(
                         272,
@@ -42,7 +42,7 @@ class SGKits extends PluginBase implements Listener {
                 )
             ),
             "wool" => array(
-                "Donator" => false,
+                "VIP" => false,
                 "Items" => array(
                     array(
                         35,
@@ -61,8 +61,8 @@ class SGKits extends PluginBase implements Listener {
                     ),
                 )
             ),
-            "Donator" => array(
-                "Donator" => true,
+            "VIP" => array(
+                "VIP" => true,
                 "Items" => array(
                     array(
                         276,
@@ -102,7 +102,7 @@ class SGKits extends PluginBase implements Listener {
 				case "list":
 						//$sender->sendMessage($this->prefix . implode(", ", $this->kits));
 					$normalKits = 'Normal Kits: ';
-					$donatorKits = 'Donator Kits: ';
+					$donatorKits = 'VIP Kits: ';
 					foreach ($this->kits as $name => $kit)
 					{
 						if ($kit['VIP'] == true)
@@ -132,7 +132,7 @@ class SGKits extends PluginBase implements Listener {
 					{
 						$sender -> sendMessage("[SurvivalGames] " . $normalKits);
 					}
-					if ($donatorKits !== 'Donator Kits: ')
+					if ($donatorKits !== 'VIP Kits: ')
 					{
 						$sender -> sendMessage("[SurvivalGames] " . $donatorKits);
 					}
@@ -233,7 +233,7 @@ class SGKits extends PluginBase implements Listener {
 				}
 				}
 				else{
-					$sender->sendMessage("[SurvivalGames] Usage: /donator <add|rmv> <exact username>");
+					$sender->sendMessage("[SurvivalGames] Usage: /vip <add|rmv> <exact username>");
 					return true;
 				}
 			}
