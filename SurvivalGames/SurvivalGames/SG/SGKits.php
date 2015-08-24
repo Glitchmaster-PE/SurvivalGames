@@ -13,6 +13,7 @@ use pocketmine\Server;
 class SGKits extends PluginBase implements Listener {
 	
 	public function onEnable(){
+		$this->servername = $this->getServer()->getServerName();
 		if (!is_dir($this->getDataFolder())) mkdir($this->getDataFolder());
 		$this->players = array();
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -83,7 +84,7 @@ class SGKits extends PluginBase implements Listener {
             ),
 			);
 		}
-		$this->prefix = "[SurvivalGames] ";
+		$this->prefix = "[" . $this->servername . "] ";
 	}
 	
 	public function onDisable(){
@@ -130,42 +131,42 @@ class SGKits extends PluginBase implements Listener {
 					}
 					if ($normalKits !== 'Normal Kits: ')
 					{
-						$sender -> sendMessage("[SurvivalGames] " . $normalKits);
+						$sender -> sendMessage("[" . $this->servername . "] " . $normalKits);
 					}
 					if ($donatorKits !== 'VIP Kits: ')
 					{
-						$sender -> sendMessage("[SurvivalGames] " . $donatorKits);
+						$sender -> sendMessage("[" . $this->servername . "] " . $donatorKits);
 					}
 						return true;
 					break;
 				case "":
 					if (!$sender instanceof Player)
 					{
-						$sender->sendMessage("[SurvivalGames] Consoles don't need kits!");
+						$sender->sendMessage("[" . $this->servername . "] " . "Consoles don't need kits!");
 						return true;
 					}
 					$username = $sender->getName();
 					if (in_array($username, $this -> players))
 					{
-						$sender->sendMessage('[SurvivalGames] You need to die before you can pick a new kit!');
+						$sender->sendMessage("[" . $this->servername . "] " . "You need to die before you can pick a new kit!");
 						return true;
 					}
 					else
 					{
-						$sender->sendMessage("[SurvivalGames] Usage: /kit <kit name> or /kit list");
+						$sender->sendMessage("[" . $this->servername . "] " . "Usage: /kit <kit name> or /kit list");
 						return true;
 					}
 					break;
 				default:
 					if (!$sender instanceof Player)
 					{
-						$sender->sendMessage("[SurvivalGames] Consoles don't need kits!");
+						$sender->sendMessage("[" . $this->servername . "] " . "Consoles don't need kits!");
 						return true;
 					}
 					$username = $sender->getName();
 					if (in_array($username, $this -> players))
 					{
-						$sender->sendMessage('[SurvivalGames] You need to die before you can pick a new kit!');
+						$sender->sendMessage("[" . $this->servername . "] " . "You need to die before you can pick a new kit!");
 						return true;
 					}
 					if (isset($this -> kits[strtolower($args[0])]))
@@ -173,20 +174,20 @@ class SGKits extends PluginBase implements Listener {
 						$kit = $this -> kits[strtolower($args[0])];
 						if ($kit["VIP"] == true and !in_array($username, $this -> vips))
 						{
-							$sender->sendMessage('[SurvivalGames] You are not a VIP!');
+							$sender->sendMessage("[" . $this->servername . "] " . "You are not a VIP!"");
 							return true;
 						}
 						else
 						{
 							$this -> giveKit($kit, $sender);
-							$sender->sendMessage('[SurvivalGames] Your kit has been given!');
+							$sender->sendMessage("[" . $this->servername . "] " . "Your kit has been given!");
 							array_push($this -> players, $username);
 							return true;
 						}
 					}
 					else
 					{
-						$sender->sendMessage("[SurvivalGames] Usage: /kit <kit name> or /kit list");
+						$sender->sendMessage("[" . $this->servername . "] " . "Usage: /kit <kit name> or /kit list");
 						return true;
 					}
 					break;
@@ -195,18 +196,18 @@ class SGKits extends PluginBase implements Listener {
 			else{
 				if (!$sender instanceof Player)
 				{
-					$sender->sendMessage("[SurvivalGames] Consoles don't need kits!");
+					$sender->sendMessage("[" . $this->servername . "] Consoles don't need kits!");
 					return true;
 				}
 				$username = $sender->getName();
 				if (in_array($username, $this -> players))
 				{
-					$sender->sendMessage('[SurvivalGames] You need to die before you can pick a new kit!');
+					$sender->sendMessage("[" . $this->servername . "] " . "You need to die before you can pick a new kit!");
 					return true;
 				}
 				else
 				{
-					$sender->sendMessage("[SurvivalGames] Usage: /kit <kit name> or /kit list");
+					$sender->sendMessage("[" . $this->servername . "] " . "Usage: /kit <kit name> or /kit list");
 					return true;
 				}
 			}
@@ -233,7 +234,7 @@ class SGKits extends PluginBase implements Listener {
 				}
 				}
 				else{
-					$sender->sendMessage("[SurvivalGames] Usage: /vip <add|rmv> <exact username>");
+					$sender->sendMessage("[" . $this->servername . "] " . "Usage: /vip <add|rmv> <exact username>");
 					return true;
 				}
 			}
